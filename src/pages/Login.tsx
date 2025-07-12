@@ -10,9 +10,10 @@ import { BookOpen } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 
 const Login = () => {
+  const [showGoogleConnect, setShowGoogleConnect] = useState(false);
   const [showNicknameDialog, setShowNicknameDialog] = useState(false);
   const [nickname, setNickname] = useState('');
-  const [mockEmail] = useState('user@example.com'); // 실제 구글 로그인 시 받아올 이메일
+  const [mockEmail] = useState('user@example.com');
   const { login } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
@@ -21,7 +22,11 @@ const Login = () => {
   const from = location.state?.from?.pathname || '/';
 
   const handleGoogleLogin = () => {
-    // 실제 구글 로그인 연동 시 여기서 구글 OAuth 처리
+    setShowGoogleConnect(true);
+  };
+
+  const handleGoogleApprove = () => {
+    setShowGoogleConnect(false);
     setShowNicknameDialog(true);
   };
 
@@ -74,6 +79,34 @@ const Login = () => {
         </CardContent>
       </Card>
 
+      {/* 구글 계정 연동 확인 다이얼로그 */}
+      <Dialog open={showGoogleConnect} onOpenChange={setShowGoogleConnect}>
+        <DialogContent className="max-w-sm mx-auto">
+          <DialogHeader>
+            <DialogTitle>구글 계정 연동</DialogTitle>
+            <DialogDescription>
+              토독토독과 구글 계정을 연동하시겠습니까?
+            </DialogDescription>
+          </DialogHeader>
+          <div className="flex gap-2">
+            <Button 
+              variant="outline" 
+              onClick={() => setShowGoogleConnect(false)}
+              className="flex-1"
+            >
+              취소
+            </Button>
+            <Button 
+              onClick={handleGoogleApprove} 
+              className="flex-1 bg-[#A8D17B] hover:bg-[#A8D17B]/90"
+            >
+              연동 승인
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
+
+      {/* 닉네임 설정 다이얼로그 */}
       <Dialog open={showNicknameDialog} onOpenChange={setShowNicknameDialog}>
         <DialogContent className="max-w-sm mx-auto">
           <DialogHeader>

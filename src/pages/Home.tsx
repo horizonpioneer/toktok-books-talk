@@ -46,25 +46,8 @@ const Home = () => {
 
   useEffect(() => {
     const savedBooks = JSON.parse(localStorage.getItem('myLibrary') || '[]');
-    setBooks(savedBooks.slice(0, 6)); // 최대 6개까지만 표시
+    setBooks(savedBooks);
   }, []);
-
-  const quickActions = [
-    {
-      title: '도서 검색',
-      description: '새로운 책을 찾아보세요',
-      icon: BookOpen,
-      action: () => navigate('/search'),
-      color: 'bg-blue-50 text-blue-600',
-    },
-    {
-      title: '토론 참여',
-      description: '다른 개발자들과 소통하세요',
-      icon: MessageSquare,
-      action: () => navigate('/discussions'),
-      color: 'bg-purple-50 text-purple-600',
-    },
-  ];
 
   return (
     <div className="p-4 space-y-6">
@@ -75,16 +58,16 @@ const Home = () => {
       </div>
 
       {/* 등록된 도서 */}
-      {books.length > 0 && (
-        <div>
-          <div className="flex items-center justify-between mb-3">
-            <h3 className="text-lg font-semibold text-gray-900">내 도서</h3>
-            <Button variant="ghost" size="sm" onClick={() => navigate('/library')}>
-              전체보기
-            </Button>
-          </div>
+      <div>
+        <div className="flex items-center justify-between mb-3">
+          <h3 className="text-lg font-semibold text-gray-900">내 서재</h3>
+          <Button variant="ghost" size="sm" onClick={() => navigate('/library')}>
+            전체보기
+          </Button>
+        </div>
+        {books.length > 0 ? (
           <div className="grid grid-cols-3 gap-3">
-            {books.map((book) => (
+            {books.slice(0, 6).map((book) => (
               <div 
                 key={book.id} 
                 className="cursor-pointer hover:scale-105 transition-transform"
@@ -97,41 +80,19 @@ const Home = () => {
               </div>
             ))}
           </div>
-        </div>
-      )}
-
-      {/* 빠른 액션 */}
-      <div>
-        <h3 className="text-lg font-semibold mb-3 text-gray-900">빠른 시작</h3>
-        <div className="grid grid-cols-1 gap-3">
-          {quickActions.map((action, index) => {
-            const Icon = action.icon;
-            return (
-              <Card key={index} className="cursor-pointer hover:shadow-md transition-shadow" onClick={action.action}>
-                <CardContent className="flex items-center p-4">
-                  <div className={`w-12 h-12 rounded-lg ${action.color} flex items-center justify-center mr-4`}>
-                    <Icon className="h-6 w-6" />
-                  </div>
-                  <div className="flex-1">
-                    <h4 className="font-medium text-gray-900">{action.title}</h4>
-                    <p className="text-sm text-gray-500">{action.description}</p>
-                  </div>
-                </CardContent>
-              </Card>
-            );
-          })}
-        </div>
-      </div>
-
-      {/* 기록 작성 플로팅 버튼 */}
-      <div className="fixed bottom-20 right-4 z-10">
-        <Button 
-          onClick={() => navigate('/record/write')}
-          className="w-14 h-14 rounded-full bg-[#A8D17B] hover:bg-[#96C169] text-white shadow-lg"
-          size="icon"
-        >
-          <Plus className="h-6 w-6" />
-        </Button>
+        ) : (
+          <Card className="cursor-pointer hover:shadow-md transition-shadow" onClick={() => navigate('/search')}>
+            <CardContent className="flex flex-col items-center justify-center p-8 text-center">
+              <BookOpen className="h-12 w-12 text-gray-300 mb-4" />
+              <h4 className="font-medium text-gray-900 mb-2">아직 등록된 도서가 없습니다</h4>
+              <p className="text-sm text-gray-500 mb-4">도서를 검색하여 나만의 서재를 만들어보세요</p>
+              <Button className="bg-[#A8D17B] hover:bg-[#A8D17B]/90">
+                <Plus className="h-4 w-4 mr-2" />
+                도서 추가하기
+              </Button>
+            </CardContent>
+          </Card>
+        )}
       </div>
 
       {/* 최근 활동 */}
