@@ -13,6 +13,7 @@ import RecordWrite from "./pages/RecordWrite";
 import MyRecords from "./pages/MyRecords";
 import Discussions from "./pages/Discussions";
 import DiscussionRoom from "./pages/DiscussionRoom";
+import DiscussionCreate from "./pages/DiscussionCreate";
 import Profile from "./pages/Profile";
 import Login from "./pages/Login";
 import NotFound from "./pages/NotFound";
@@ -35,6 +36,7 @@ const App = () => (
               <Route path="record/write" element={<RecordWrite />} />
               <Route path="records" element={<MyRecords />} />
               <Route path="discussions" element={<Discussions />} />
+              <Route path="discussion/create" element={<DiscussionCreate />} />
               <Route path="discussion/:id" element={<DiscussionRoom />} />
               <Route path="profile" element={<Profile />} />
             </Route>

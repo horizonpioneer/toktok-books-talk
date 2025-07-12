@@ -1,6 +1,6 @@
 
 import { useLocation, useNavigate } from 'react-router-dom';
-import { Home, Search, BookOpen, FileText, MessageSquare, User } from 'lucide-react';
+import { Home, Search, BookOpen, MessageSquare, User } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 const BottomNavigation = () => {
@@ -11,7 +11,6 @@ const BottomNavigation = () => {
     { path: '/', icon: Home, label: '홈' },
     { path: '/search', icon: Search, label: '검색' },
     { path: '/library', icon: BookOpen, label: '서재' },
-    { path: '/records', icon: FileText, label: '기록' },
     { path: '/discussions', icon: MessageSquare, label: '토론' },
     { path: '/profile', icon: User, label: '프로필' },
   ];

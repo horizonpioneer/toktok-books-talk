@@ -22,12 +22,12 @@ const MyLibrary = () => {
   const { toast } = useToast();
 
   useEffect(() => {
-    // 로컬 스토리지에서 도서 목록 불러오기
     const savedBooks = JSON.parse(localStorage.getItem('myLibrary') || '[]');
     setBooks(savedBooks);
   }, []);
 
-  const handleRemoveBook = (bookId: string) => {
+  const handleRemoveBook = (bookId: string, e: React.MouseEvent) => {
+    e.stopPropagation();
     const updatedBooks = books.filter(book => book.id !== bookId);
     setBooks(updatedBooks);
     localStorage.setItem('myLibrary', JSON.stringify(updatedBooks));
@@ -35,6 +35,11 @@ const MyLibrary = () => {
       title: "도서가 삭제되었습니다",
       description: "서재에서 도서를 제거했습니다.",
     });
+  };
+
+  const handleBookClick = (book: Book) => {
+    // 해당 도서의 기록들을 보여주는 페이지로 이동
+    navigate('/records', { state: { selectedBook: book } });
   };
 
   if (books.length === 0) {
@@ -76,43 +81,33 @@ const MyLibrary = () => {
         </Button>
       </div>
 
-      <div className="space-y-3">
+      <div className="grid grid-cols-2 gap-4">
         {books.map((book) => (
-          <Card key={book.id} className="hover:shadow-md transition-shadow">
-            <CardContent className="p-4">
-              <div className="flex space-x-3">
-                <div className="w-16 h-20 bg-gray-200 rounded flex-shrink-0 flex items-center justify-center">
-                  <span className="text-xs text-gray-500">📚</span>
-                </div>
-                <div className="flex-1 min-w-0">
-                  <h3 className="font-medium text-gray-900 mb-1 truncate">
-                    {book.title}
-                  </h3>
-                  <p className="text-sm text-gray-600 mb-1">{book.author}</p>
-                  <p className="text-xs text-gray-500 mb-2">
-                    {book.publisher} · {book.publishedDate}
-                  </p>
-                  <div className="flex space-x-2">
-                    <Button
-                      size="sm"
-                      variant="outline"
-                      onClick={() => navigate('/record/write', { state: { selectedBook: book } })}
-                      className="text-xs"
-                    >
-                      기록 작성
-                    </Button>
-                  </div>
-                </div>
-                <div className="flex-shrink-0">
-                  <Button
-                    size="sm"
-                    variant="ghost"
-                    onClick={() => handleRemoveBook(book.id)}
-                    className="text-red-500 hover:text-red-700 hover:bg-red-50"
-                  >
-                    <Trash2 className="h-4 w-4" />
-                  </Button>
-                </div>
+          <Card 
+            key={book.id} 
+            className="cursor-pointer hover:shadow-md transition-shadow relative"
+            onClick={() => handleBookClick(book)}
+          >
+            <CardContent className="p-3">
+              <div className="aspect-[3/4] bg-gray-200 rounded-lg flex items-center justify-center mb-3 relative">
+                <span className="text-4xl">📚</span>
+                <Button
+                  size="sm"
+                  variant="ghost"
+                  onClick={(e) => handleRemoveBook(book.id, e)}
+                  className="absolute top-1 right-1 text-red-500 hover:text-red-700 hover:bg-red-50 w-6 h-6 p-0"
+                >
+                  <Trash2 className="h-3 w-3" />
+                </Button>
+              </div>
+              <div>
+                <h3 className="font-medium text-gray-900 mb-1 line-clamp-2 text-sm">
+                  {book.title}
+                </h3>
+                <p className="text-xs text-gray-600 mb-1">{book.author}</p>
+                <p className="text-xs text-gray-500">
+                  {book.publisher}
+                </p>
               </div>
             </CardContent>
           </Card>

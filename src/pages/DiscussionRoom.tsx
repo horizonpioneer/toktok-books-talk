@@ -57,7 +57,7 @@ const DiscussionRoom = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 pb-32">
       <div className="bg-white border-b p-4 flex items-center gap-3">
         <Button variant="ghost" size="sm" onClick={() => navigate('/discussions')}>
           <ArrowLeft className="h-4 w-4" />
@@ -158,7 +158,8 @@ const DiscussionRoom = () => {
         </div>
       </div>
 
-      <div className="fixed bottom-0 left-1/2 transform -translate-x-1/2 w-full max-w-md bg-white border-t p-4">
+      {/* 댓글 입력창을 더 위로 올림 */}
+      <div className="fixed bottom-16 left-1/2 transform -translate-x-1/2 w-full max-w-md bg-white border-t p-4 shadow-lg">
         <div className="flex gap-2">
           <Textarea
             placeholder="댓글을 작성하세요..."

@@ -4,7 +4,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { BookOpen, MessageSquare, PenTool, TrendingUp } from 'lucide-react';
+import { BookOpen, MessageSquare, TrendingUp, Plus } from 'lucide-react';
 
 interface RecentActivity {
   id: string;
@@ -14,9 +14,20 @@ interface RecentActivity {
   date: string;
 }
 
+interface Book {
+  id: string;
+  title: string;
+  author: string;
+  publisher: string;
+  thumbnail: string;
+  description: string;
+  publishedDate: string;
+}
+
 const Home = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
+  const [books, setBooks] = useState<Book[]>([]);
   const [recentActivities] = useState<RecentActivity[]>([
     {
       id: '1',
@@ -33,6 +44,11 @@ const Home = () => {
     },
   ]);
 
+  useEffect(() => {
+    const savedBooks = JSON.parse(localStorage.getItem('myLibrary') || '[]');
+    setBooks(savedBooks.slice(0, 6)); // 최대 6개까지만 표시
+  }, []);
+
   const quickActions = [
     {
       title: '도서 검색',
@@ -40,13 +56,6 @@ const Home = () => {
       icon: BookOpen,
       action: () => navigate('/search'),
       color: 'bg-blue-50 text-blue-600',
-    },
-    {
-      title: '기록 작성',
-      description: '읽은 내용을 기록해보세요',
-      icon: PenTool,
-      action: () => navigate('/record/write'),
-      color: 'bg-green-50 text-green-600',
     },
     {
       title: '토론 참여',
@@ -64,6 +73,32 @@ const Home = () => {
         <h2 className="text-xl font-bold mb-2">안녕하세요, {user?.nickname}님!</h2>
         <p className="text-sm opacity-90">오늘도 새로운 지식을 쌓아보세요</p>
       </div>
+
+      {/* 등록된 도서 */}
+      {books.length > 0 && (
+        <div>
+          <div className="flex items-center justify-between mb-3">
+            <h3 className="text-lg font-semibold text-gray-900">내 도서</h3>
+            <Button variant="ghost" size="sm" onClick={() => navigate('/library')}>
+              전체보기
+            </Button>
+          </div>
+          <div className="grid grid-cols-3 gap-3">
+            {books.map((book) => (
+              <div 
+                key={book.id} 
+                className="cursor-pointer hover:scale-105 transition-transform"
+                onClick={() => navigate('/library')}
+              >
+                <div className="aspect-[3/4] bg-gray-200 rounded-lg flex items-center justify-center mb-2">
+                  <span className="text-2xl">📚</span>
+                </div>
+                <p className="text-xs text-gray-700 line-clamp-2 text-center">{book.title}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
 
       {/* 빠른 액션 */}
       <div>
@@ -88,6 +123,17 @@ const Home = () => {
         </div>
       </div>
 
+      {/* 기록 작성 플로팅 버튼 */}
+      <div className="fixed bottom-20 right-4 z-10">
+        <Button 
+          onClick={() => navigate('/record/write')}
+          className="w-14 h-14 rounded-full bg-[#A8D17B] hover:bg-[#96C169] text-white shadow-lg"
+          size="icon"
+        >
+          <Plus className="h-6 w-6" />
+        </Button>
+      </div>
+
       {/* 최근 활동 */}
       <div>
         <div className="flex items-center justify-between mb-3">
@@ -105,7 +151,7 @@ const Home = () => {
                     activity.type === 'record' ? 'bg-green-100 text-green-600' : 'bg-purple-100 text-purple-600'
                   }`}>
                     {activity.type === 'record' ? (
-                      <PenTool className="h-4 w-4" />
+                      <BookOpen className="h-4 w-4" />
                     ) : (
                       <MessageSquare className="h-4 w-4" />
                     )}
@@ -135,7 +181,7 @@ const Home = () => {
         <CardContent>
           <div className="grid grid-cols-3 gap-4 text-center">
             <div>
-              <div className="text-2xl font-bold text-[#A8D17B]">12</div>
+              <div className="text-2xl font-bold text-[#A8D17B]">{books.length}</div>
               <div className="text-xs text-gray-500">등록된 도서</div>
             </div>
             <div>

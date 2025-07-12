@@ -49,7 +49,7 @@ const Discussions = () => {
         </div>
         <Button 
           className="bg-[#A8D17B] hover:bg-[#96C169] text-white"
-          onClick={() => navigate('/discussion/new')}
+          onClick={() => navigate('/discussion/create')}
         >
           <Plus className="h-4 w-4 mr-1" />
           토론 시작
@@ -138,7 +138,10 @@ const Discussions = () => {
         <div className="text-center py-12">
           <MessageSquare className="h-12 w-12 text-gray-300 mx-auto mb-4" />
           <p className="text-gray-500 mb-4">진행 중인 토론이 없습니다.</p>
-          <Button className="bg-[#A8D17B] hover:bg-[#96C169] text-white">
+          <Button 
+            className="bg-[#A8D17B] hover:bg-[#96C169] text-white"
+            onClick={() => navigate('/discussion/create')}
+          >
             첫 번째 토론 시작하기
           </Button>
         </div>
