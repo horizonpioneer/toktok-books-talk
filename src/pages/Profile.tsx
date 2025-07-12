@@ -6,14 +6,16 @@ import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { useAuth } from '@/contexts/AuthContext';
 import { User, BookOpen, FileText, MessageSquare, Settings, LogOut, Shield } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 const Profile = () => {
   const { user, logout } = useAuth();
+  const navigate = useNavigate();
 
   const stats = [
-    { label: '서재 도서', value: 12, icon: BookOpen },
-    { label: '작성 기록', value: 8, icon: FileText },
-    { label: '참여 토론', value: 5, icon: MessageSquare }
+    { label: '서재 도서', value: 12, icon: BookOpen, path: '/profile/library' },
+    { label: '작성 기록', value: 8, icon: FileText, path: '/profile/records' },
+    { label: '참여 토론', value: 5, icon: MessageSquare, path: '/profile/discussions' }
   ];
 
   const recentActivity = [
@@ -48,7 +50,11 @@ const Profile = () => {
         {stats.map((stat, index) => {
           const Icon = stat.icon;
           return (
-            <Card key={index} className="text-center">
+            <Card 
+              key={index} 
+              className="text-center cursor-pointer hover:shadow-md transition-shadow"
+              onClick={() => navigate(stat.path)}
+            >
               <CardContent className="p-4">
                 <Icon className="h-6 w-6 mx-auto mb-2 text-[#A8D17B]" />
                 <p className="text-lg font-bold">{stat.value}</p>

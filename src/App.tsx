@@ -1,4 +1,3 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -17,6 +16,9 @@ import DiscussionCreate from "./pages/DiscussionCreate";
 import Profile from "./pages/Profile";
 import Login from "./pages/Login";
 import NotFound from "./pages/NotFound";
+import ProfileLibrary from "./pages/ProfileLibrary";
+import ProfileRecords from "./pages/ProfileRecords";
+import ProfileDiscussions from "./pages/ProfileDiscussions";
 
 const queryClient = new QueryClient();
 
@@ -39,6 +41,9 @@ const App = () => (
               <Route path="discussion/create" element={<DiscussionCreate />} />
               <Route path="discussion/:id" element={<DiscussionRoom />} />
               <Route path="profile" element={<Profile />} />
+              <Route path="profile/library" element={<ProfileLibrary />} />
+              <Route path="profile/records" element={<ProfileRecords />} />
+              <Route path="profile/discussions" element={<ProfileDiscussions />} />
             </Route>
             <Route path="*" element={<NotFound />} />
           </Routes>
