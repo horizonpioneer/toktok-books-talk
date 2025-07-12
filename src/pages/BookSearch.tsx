@@ -1,5 +1,4 @@
-
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent } from '@/components/ui/card';
@@ -23,7 +22,7 @@ const BookSearch = () => {
   const [addedBooks, setAddedBooks] = useState<Set<string>>(new Set());
   const { toast } = useToast();
 
-  // 목업 도서 데이터
+  // 확장된 목업 도서 데이터
   const mockBooks: Book[] = [
     {
       id: '1',
@@ -52,7 +51,96 @@ const BookSearch = () => {
       description: '기존 코드를 안전하게 개선하는 방법',
       publishedDate: '2019-12-02',
     },
+    {
+      id: '4',
+      title: '이펙티브 자바',
+      author: '조슈아 블로크',
+      publisher: '인사이트',
+      thumbnail: '/placeholder.svg',
+      description: '자바 플랫폼 모범 사례 가이드',
+      publishedDate: '2018-10-19',
+    },
+    {
+      id: '5',
+      title: '알고리즘 문제 해결 전략',
+      author: '구종만',
+      publisher: '인사이트',
+      thumbnail: '/placeholder.svg',
+      description: '프로그래밍 대회에서 배우는 알고리즘 문제 해결 기법',
+      publishedDate: '2012-03-15',
+    },
+    {
+      id: '6',
+      title: 'You Don\'t Know JS',
+      author: '카일 심슨',
+      publisher: '한빛미디어',
+      thumbnail: '/placeholder.svg',
+      description: '자바스크립트를 제대로 배우기 위한 시리즈',
+      publishedDate: '2015-07-27',
+    },
+    {
+      id: '7',
+      title: '스프링 부트와 AWS로 혼자 구현하는 웹 서비스',
+      author: '이동욱',
+      publisher: '프리렉',
+      thumbnail: '/placeholder.svg',
+      description: '실전 웹 서비스 개발부터 배포까지',
+      publishedDate: '2019-12-24',
+    },
+    {
+      id: '8',
+      title: '데이터베이스 첫걸음',
+      author: '미크',
+      publisher: '한빛미디어',
+      thumbnail: '/placeholder.svg',
+      description: 'SQL부터 데이터 모델링까지',
+      publishedDate: '2015-09-01',
+    },
+    {
+      id: '9',
+      title: 'Node.js 교과서',
+      author: '조현영',
+      publisher: '길벗',
+      thumbnail: '/placeholder.svg',
+      description: '기본기부터 프로젝트 실습까지',
+      publishedDate: '2020-07-25',
+    },
+    {
+      id: '10',
+      title: '파이썬 머신러닝 완벽 가이드',
+      author: '권철민',
+      publisher: '위키북스',
+      thumbnail: '/placeholder.svg',
+      description: '다양한 머신러닝 기법과 실무 예제',
+      publishedDate: '2020-01-20',
+    },
+    {
+      id: '11',
+      title: 'HTTP 완벽 가이드',
+      author: '데이빗 고울리',
+      publisher: '인사이트',
+      thumbnail: '/placeholder.svg',
+      description: '웹의 핵심 기술 HTTP 완벽 해설서',
+      publishedDate: '2014-04-30',
+    },
+    {
+      id: '12',
+      title: '컴퓨터 시스템의 이해',
+      author: '랜달 브라이언트',
+      publisher: '피어슨에듀케이션',
+      thumbnail: '/placeholder.svg',
+      description: '프로그래머 관점에서 본 컴퓨터 시스템',
+      publishedDate: '2016-08-31',
+    },
   ];
+
+  useEffect(() => {
+    // 초기 데이터 설정 (localStorage가 비어있을 때만)
+    const existingBooks = localStorage.getItem('myLibrary');
+    if (!existingBooks || JSON.parse(existingBooks).length === 0) {
+      localStorage.setItem('myLibrary', JSON.stringify(mockBooks));
+    }
+  }, []);
 
   const handleSearch = async () => {
     if (!searchQuery.trim()) {
